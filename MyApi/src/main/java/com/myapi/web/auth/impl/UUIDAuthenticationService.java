@@ -25,7 +25,7 @@ final class UUIDAuthenticationService implements UserAuthenticationService {
 	@Override
 	public Optional<String> login(final String username, final String password) {
 		final String uuid = UUID.randomUUID().toString();
-		final User user = User.builder().id(new Long(0)).username(username).password(password).build();
+		final User user = new User(new Long(0), username, password, null);
 
 		User loggedInUser = users.exists(user);
 		if (loggedInUser != null) {

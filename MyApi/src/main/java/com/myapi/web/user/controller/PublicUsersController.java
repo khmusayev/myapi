@@ -31,12 +31,7 @@ final class PublicUsersController {
   String register(
     @RequestParam("username") final String username,
     @RequestParam("password") final String password) {
-	  User newUser = User
-	          .builder()
-	          .id(new Long(0))
-	          .username(username)
-	          .password(password)
-	          .build();
+	  User newUser = new User(new Long(0), username, password, null);
     users.register(newUser);
     return login(username, password);
   }

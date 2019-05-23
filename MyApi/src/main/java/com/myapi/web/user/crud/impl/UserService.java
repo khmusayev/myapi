@@ -72,5 +72,9 @@ public class UserService implements UserCrudService {
 	public void removeFromLoggedInList(String username) {
 		loggedInUsers.entrySet().removeIf(entry -> entry.getValue().getUsername().equals(username));
 	}
+
+	public void save(User user) {
+		userRepository.save(user);
+	}
 	
 }
