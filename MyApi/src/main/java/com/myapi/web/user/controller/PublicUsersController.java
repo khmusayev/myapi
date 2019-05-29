@@ -3,6 +3,8 @@ package com.myapi.web.user.controller;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +23,7 @@ import static lombok.AccessLevel.PRIVATE;
 @RequestMapping("/public/users")
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
+@CrossOrigin(origins = "http://localhost:8081")
 final class PublicUsersController {
   @NonNull
   UserAuthenticationService authentication;
