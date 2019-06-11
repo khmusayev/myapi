@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ import static lombok.AccessLevel.PRIVATE;
 @RequestMapping("/users")
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
+@CrossOrigin(origins = "http://localhost:5555")
 final class SecuredUsersController {
   @NonNull
   UserAuthenticationService authentication;
@@ -29,6 +31,7 @@ final class SecuredUsersController {
 
   @GetMapping("/logout")
   boolean logout(@AuthenticationPrincipal final User user) {
+	System.out.println("About to log out");
     return authentication.logout(user);
   }
 }

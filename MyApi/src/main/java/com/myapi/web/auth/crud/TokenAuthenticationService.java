@@ -27,11 +27,15 @@ final class TokenAuthenticationService implements UserAuthenticationService {
   UserCrudService users;
 
   @Override
-  public Optional<String> login(final String username, final String password) {
-    return users
-      .findByUsername(username)
-      .filter(user -> Objects.equals(password, user.getPassword()))
-      .map(user -> tokens.expiring(ImmutableMap.of("username", username)));
+  public Optional<User> login(final String username, final String password) {
+	Optional<User> newUser = users
+		      .findByUsername(username)
+		      .filter(user -> Objects.equals(password, user.getPassword()));
+	if(!newUser.isPresent())
+		return Optional.empty();
+	Optional<String> token = newUser.map(user -> tokens.expiring(ImmutableMap.of("username", username))); 
+	newUser.get().setToken(token.get());
+    return newUser;
   }
 
   @Override

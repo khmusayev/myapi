@@ -23,7 +23,7 @@ import static lombok.AccessLevel.PRIVATE;
 @RequestMapping("/public/users")
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "http://localhost:5555")
 final class PublicUsersController {
   @NonNull
   UserAuthenticationService authentication;
@@ -31,7 +31,7 @@ final class PublicUsersController {
   UserCrudService users;
 
   @PostMapping("/register")
-  String register(
+  User register(
     @RequestParam("username") final String username,
     @RequestParam("password") final String password) {
 	  User newUser = new User(new Long(0), username, password, null);
@@ -40,7 +40,7 @@ final class PublicUsersController {
   }
 
   @PostMapping("/login")
-  String login(
+  User login(
     @RequestParam("username") final String username,
     @RequestParam("password") final String password) {
     return authentication

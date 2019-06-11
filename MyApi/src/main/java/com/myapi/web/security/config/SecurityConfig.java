@@ -1,5 +1,6 @@
 package com.myapi.web.security.config;
 
+import com.google.common.collect.ImmutableList;
 import com.myapi.web.security.NoRedirectStrategy;
 import lombok.experimental.FieldDefaults;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -15,15 +16,21 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static java.util.Objects.requireNonNull;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
+import javax.servlet.Filter;
 
 @Configuration
 @EnableWebSecurity
@@ -36,7 +43,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
   private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(PUBLIC_URLS);
 
   TokenAuthenticationProvider provider;
-
+  
   SecurityConfig(final TokenAuthenticationProvider provider) {
     super();
     this.provider = requireNonNull(provider);
@@ -49,7 +56,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   public void configure(final WebSecurity web) {
-    web.ignoring().requestMatchers(PUBLIC_URLS);
+//    web.ignoring().requestMatchers(PUBLIC_URLS);
   }
 
   @Override
@@ -69,10 +76,12 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
       .requestMatchers(PROTECTED_URLS)
       .authenticated()
       .and()
-      .csrf().disable()
+//      .csrf().disable()
+//      .cors().disable()
       .formLogin().disable()
       .httpBasic().disable()
       .logout().disable();
+    http.cors();
   }
 
   @Bean
@@ -103,5 +112,22 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Bean
   AuthenticationEntryPoint forbiddenEntryPoint() {
     return new HttpStatusEntryPoint(FORBIDDEN);
+  }
+  
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+      final CorsConfiguration configuration = new CorsConfiguration();
+      configuration.setAllowedOrigins(ImmutableList.of("*"));
+      configuration.setAllowedMethods(ImmutableList.of("HEAD",
+              "GET", "POST", "PUT", "DELETE", "PATCH"));
+      // setAllowCredentials(true) is important, otherwise:
+      // The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'.
+      configuration.setAllowCredentials(true);
+      // setAllowedHeaders is important! Without it, OPTIONS preflight request
+      // will fail with 403 Invalid CORS request
+      configuration.setAllowedHeaders(ImmutableList.of("Authorization", "Cache-Control", "Content-Type"));
+      final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+      source.registerCorsConfiguration("/**", configuration);
+      return source;
   }
 }

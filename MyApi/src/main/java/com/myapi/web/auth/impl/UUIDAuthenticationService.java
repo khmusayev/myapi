@@ -23,15 +23,16 @@ final class UUIDAuthenticationService implements UserAuthenticationService {
 	UserCrudService users;
 
 	@Override
-	public Optional<String> login(final String username, final String password) {
-		final String uuid = UUID.randomUUID().toString();
+	public Optional<User> login(final String username, final String password) {
 		final User user = new User(new Long(0), username, password, null);
 
 		User loggedInUser = users.exists(user);
 		if (loggedInUser != null) {
+			final String uuid = UUID.randomUUID().toString();
 			loggedInUser.setToken(uuid);
 			users.addToLoggedInUsers(uuid, loggedInUser);
-			return Optional.of(uuid);
+			loggedInUser.setToken(uuid);
+			return Optional.of(loggedInUser);
 		}
 		return Optional.empty();
 	}

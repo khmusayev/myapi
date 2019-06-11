@@ -30,7 +30,8 @@ final class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticatio
 
   @Override
   protected UserDetails retrieveUser(final String username, final UsernamePasswordAuthenticationToken authentication) {
-    final Object token = authentication.getCredentials();
+    System.out.println("About to check if the token is there");
+	final Object token = authentication.getCredentials();
     return Optional
       .ofNullable(token)
       .map(String::valueOf)

@@ -13,7 +13,7 @@ public interface UserAuthenticationService {
    * @param password
    * @return an {@link Optional} of a user when login succeeds
    */
-  Optional<String> login(String username, String password);
+  Optional<User> login(String username, String password);
 
   /**
    * Finds a user by its dao-key.
