@@ -19,16 +19,18 @@ import static lombok.AccessLevel.PRIVATE;
 @RequestMapping("/users")
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
-@CrossOrigin(origins = "http://localhost:5555")
+@CrossOrigin(origins = "http://localhost:4444")
 final class SecuredUsersController {
   @NonNull
   UserAuthenticationService authentication;
 
+  @CrossOrigin(origins = "http://localhost:4444")
   @GetMapping("/current")
   User getCurrent(@AuthenticationPrincipal final User user) {
     return user;
   }
 
+  @CrossOrigin(origins = "http://localhost:4444")
   @GetMapping("/logout")
   boolean logout(@AuthenticationPrincipal final User user) {
 	System.out.println("About to log out");
