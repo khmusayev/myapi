@@ -1,6 +1,7 @@
 package com.myapi.web.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,11 @@ public class UserJobServiceImpl implements UserJobService {
 	@Override
 	public void delete(UserJob userJob) {
 		userJobRepository.delete(userJob);
+	}
+
+	@Override
+	public Optional<UserJob> findById(Long id) {
+		return userJobRepository.findById(id);
 	}
 
 }

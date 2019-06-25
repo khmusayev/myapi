@@ -44,16 +44,31 @@ public class UserJobController {
 	}
 
 	@PostMapping
-	public UserJob addJobEntry(final Principal principal, @RequestBody final UserJob theJob) {
+	public UserJob addUpdateJobEntry(final Principal principal, @RequestBody final UserJob theJob) {
 		Optional<User> theUser = userService.findByUsername(principal.getName());
 
 		if (!theUser.isPresent()) {
 			throw new RuntimeException("User id not found - " + principal.getName());
 		}
+		if(theJob.getId() < 0) {
+			theJob.setId((long) 0);
+			theJob.setUser(theUser.get());
+			userJobService.save(theJob);
+		} else {
+			 Optional<UserJob> job = userJobService.findById(theJob.getId());
+			if(job.isPresent()) {
+				if(job.get().getUser().getId() != theUser.get().getId()) {
+					throw new RuntimeException("Job does not belong to the user - " + principal.getName());
+				} else {
+					theJob.setUser(job.get().getUser());
+					userJobService.save(theJob);
+				}
+			}
+			else {
+				throw new RuntimeException("Job id is bigger than zero and does not exist in the databank");
+			}
+		}
 		
-		theJob.setId((long) 0);
-		theJob.setUser(theUser.get());
-		userJobService.save(theJob);
 		return theJob;
 	}
 	
@@ -77,19 +92,23 @@ public class UserJobController {
 	}
 	
 	@DeleteMapping
-	public String deleteJobEntry(final Principal principal, @RequestParam("jobid") final int jobId) {
+	public String deleteJobEntry(final Principal principal, @RequestParam("jobid") final Long jobId) {
 		Optional<User> theUser = userService.findByUsername(principal.getName());
 
 		if (!theUser.isPresent()) {
 			throw new RuntimeException("User id not found - " + principal.getName());
 		}
-		List<UserJob> jobs = userJobService.findAll(theUser.get().getId());
-		if(jobId >= jobs.size()) {
-			throw new RuntimeException("UserJob id not found - " + theUser.get().getId());
+		
+		Optional<UserJob> job = userJobService.findById(jobId);
+		if(job.isPresent()) {
+			if(job.get().getUser().getId() != theUser.get().getId()) {
+				throw new RuntimeException("Job does not belong to the user - " + principal.getName());
+			} else {
+				userJobService.delete(job.get());
+				return "Deleted userJob id - " + jobId;
+			}
 		}
-		long deletedJobId = jobs.get((int) jobId).getId();
-		userJobService.delete(jobs.get((int) jobId));
-		return "Deleted userJob id - " + deletedJobId;
+		return "UserJob id does not exist - " + jobId;
 	}
 
 }

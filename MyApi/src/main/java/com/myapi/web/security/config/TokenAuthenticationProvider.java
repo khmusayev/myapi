@@ -26,7 +26,7 @@ final class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticatio
   @Override
   protected void additionalAuthenticationChecks(final UserDetails d, final UsernamePasswordAuthenticationToken auth) {
     // Nothing to do
-  }
+	  }
 
   @Override
   protected UserDetails retrieveUser(final String username, final UsernamePasswordAuthenticationToken authentication) {
