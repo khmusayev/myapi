@@ -30,7 +30,8 @@ public class UserJob {
 	private String company;
 	private String position;
 	
-	private String jobDescription;
+	@Column(columnDefinition="text")
+	private String description;
 	
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -45,7 +46,6 @@ public class UserJob {
 				", endDate='" + endDate + '\'' +
 				", company='" + company + '\'' +
 				", position='" + position + '\'' +
-				", jobDescription='" + jobDescription + '\'' +
 				'}';
 	}
 }

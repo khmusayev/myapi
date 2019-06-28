@@ -48,17 +48,21 @@ public class User implements UserDetails {
 	Long id;
 	String username;
 	String password;
+	String firstName;
+	String lastName;
 
 	@Transient
 	String token;
 
 	@JsonCreator
 	public User(@JsonProperty("id") final Long id, @JsonProperty("username") final String username,
-			@JsonProperty("password") final String password, @JsonProperty("token") final String token) {
+			@JsonProperty("password") final String password, @JsonProperty("firstName") final String firstName, @JsonProperty("lastName") final String lastName,@JsonProperty("token") final String token) {
 		super();
 		this.id = requireNonNull(id);
 		this.username = requireNonNull(username);
 		this.password = requireNonNull(password);
+		this.firstName = requireNonNull(firstName);
+		this.lastName = requireNonNull(lastName);
 		this.token = token;
 	}
 	

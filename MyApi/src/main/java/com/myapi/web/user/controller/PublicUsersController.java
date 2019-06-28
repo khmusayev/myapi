@@ -34,8 +34,10 @@ final class PublicUsersController {
   @PostMapping("/register")
   User register(
     @RequestParam("username") final String username,
-    @RequestParam("password") final String password) {
-	  User newUser = new User(new Long(0), username, password, null);
+    @RequestParam("password") final String password,
+    @RequestParam("firstName") final String firstName,
+    @RequestParam("lastName") final String lastName) {
+	  User newUser = new User(new Long(0), username, password, firstName, lastName, null);
     users.register(newUser);
     return login(username, password);
   }

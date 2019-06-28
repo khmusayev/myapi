@@ -19,7 +19,7 @@ public interface UserCrudService {
 
 	User register(User user);
 
-	User exists(User user);
+	User exists(String username, String password);
 
 	User findCurrentUser(String token);
 

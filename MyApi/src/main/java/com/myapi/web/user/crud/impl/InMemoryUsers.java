@@ -36,7 +36,7 @@ final class InMemoryUsers implements UserCrudService {
 	}
 
 	@Override
-	public User exists(User user) {
+	public User exists(String username, String password) {
 		// TODO Auto-generated method stub
 		return null;
 	}

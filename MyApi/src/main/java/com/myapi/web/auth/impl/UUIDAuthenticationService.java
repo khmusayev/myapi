@@ -24,9 +24,8 @@ final class UUIDAuthenticationService implements UserAuthenticationService {
 
 	@Override
 	public Optional<User> login(final String username, final String password) {
-		final User user = new User(new Long(0), username, password, null);
 
-		User loggedInUser = users.exists(user);
+		User loggedInUser = users.exists(username, password);
 		if (loggedInUser != null) {
 			final String uuid = UUID.randomUUID().toString();
 			loggedInUser.setToken(uuid);
@@ -44,7 +43,7 @@ final class UUIDAuthenticationService implements UserAuthenticationService {
 
 	@Override
 	public boolean logout(final User user) {
-		User loggedInUser = users.exists(user);
+		User loggedInUser = users.exists(user.getUsername(), user.getPassword());
 		if (loggedInUser != null) {
 			users.removeFromLoggedInList(user.getUsername());
 			return true;

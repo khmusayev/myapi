@@ -92,7 +92,7 @@ public class UserJobController {
 	}
 	
 	@DeleteMapping
-	public String deleteJobEntry(final Principal principal, @RequestParam("jobid") final Long jobId) {
+	public UserJob deleteJobEntry(final Principal principal, @RequestParam("jobid") final Long jobId) {
 		Optional<User> theUser = userService.findByUsername(principal.getName());
 
 		if (!theUser.isPresent()) {
@@ -105,10 +105,10 @@ public class UserJobController {
 				throw new RuntimeException("Job does not belong to the user - " + principal.getName());
 			} else {
 				userJobService.delete(job.get());
-				return "Deleted userJob id - " + jobId;
+				return job.get();
 			}
 		}
-		return "UserJob id does not exist - " + jobId;
+		return null;
 	}
 
 }

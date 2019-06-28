@@ -48,12 +48,12 @@ public class UserService implements UserCrudService {
 	}
 
 	@Override
-	public User exists(User user) {
-		User userInDB = userRepository.findByUsername(user.getUsername());
+	public User exists(String username, String password) {
+		User userInDB = userRepository.findByUsername(username);
 		if(userInDB == null)
-			throw new RuntimeException("No such username - " + user.getUsername());
-		if(!userInDB.getPassword().equals(user.getPassword()))
-			throw new RuntimeException("Wrong password for the username - " + user.getUsername());
+			throw new RuntimeException("No such username - " + username);
+		if(!userInDB.getPassword().equals(password))
+			throw new RuntimeException("Wrong password for the username - " + username);
 		return userInDB;
 	}
 

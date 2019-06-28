@@ -30,7 +30,9 @@ public class UserEducation {
 	private String university;
 	private String faculty;
 	private String degree;
-	private String courseDescription;
+	
+	@Column(columnDefinition="text")
+	private String description;
 	
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -46,7 +48,6 @@ public class UserEducation {
 				", university='" + university + '\'' +
 				", faculty='" + faculty + '\'' +
 				", degree='" + degree + '\'' +
-				", courseDescription='" + courseDescription + '\'' +
 				'}';
 	}
 }
