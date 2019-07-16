@@ -32,7 +32,7 @@ public class UserJobController {
 	private UserJobService userJobService;
 
 	@GetMapping
-	public List<UserJob> getUser(final Principal principal) {
+	public List<UserJob> getAllJobs(final Principal principal) {
 
 		Optional<User> theUser = userService.findByUsername(principal.getName());
 

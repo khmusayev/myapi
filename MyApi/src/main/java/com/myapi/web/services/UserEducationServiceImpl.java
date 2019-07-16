@@ -1,6 +1,7 @@
 package com.myapi.web.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,11 @@ public class UserEducationServiceImpl implements UserEducationService {
 	@Override
 	public void delete(UserEducation theEducation) {
 		userEducationRepository.delete(theEducation);
+	}
+
+	@Override
+	public Optional<UserEducation> findById(Long id) {
+		return userEducationRepository.findById(id);
 	}
 
 }
