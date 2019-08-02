@@ -49,14 +49,16 @@ public class UserContactController {
 		}
 
 		theContact.setId((long) 0);
-		UserContact currentContact = theUser.get().getUserContact();
+		UserContact currentContact = userContactService.findByUserId(theUser.get().getId());
 		if(currentContact != null) {
 			theUser.get().setUserContact(null);
 			currentContact.setUser(null);
 			userContactService.delete(currentContact);
+			System.out.println("Old contact just deleted");
 		}
 		theUser.get().setUserContact(theContact);	
 		userService.save(theUser.get());
+		System.out.println("New contact just added");
 //		userContactService.save(theContact);
 		return theContact;
 	}
